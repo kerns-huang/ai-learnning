@@ -13,24 +13,12 @@ import time
 from openai import OpenAI
 
 class MyVanna(ChromaDB_VectorStore, OpenAI_Chat):
-    def __init__(self, config=None):
+    def __init__(self, config=None,client=None):
         # 分离配置，只将OpenAI客户端传递给OpenAI_Chat
-        chroma_config = config.copy() if config else {}
-        openai_config = config.copy() if config else {}
-        
-        # 保存client到实例属性
-        if config and 'client' in config:
-            self.client = config['client']
-        else:
-            self.client = None
-        
-        # 从chroma_config中移除client
-        if 'client' in chroma_config:
-            del chroma_config['client']
-            
+        self.client = client
         # 初始化两个基类 向量数据库和LLM配置
-        ChromaDB_VectorStore.__init__(self, config=chroma_config)
-        OpenAI_Chat.__init__(self, config=openai_config)
+        ChromaDB_VectorStore.__init__(self, config=config)
+        OpenAI_Chat.__init__(self, config=config)
 
 # 创建OpenAI客户端
 client = OpenAI(
@@ -41,9 +29,8 @@ client = OpenAI(
 # 初始化Vanna实例
 vn = MyVanna(config={
     'model': 'gpt-4o-mini', 
-    'client': client,
     'path': './data' # 向量数据库的存储路径
-})
+},client=client)
 
 vn.connect_to_mysql(host='rm-uf6z891lon6dxuqblqo.mysql.rds.aliyuncs.com', 
                     dbname='action', user='student123', password='student321', port=3306)
