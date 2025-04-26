@@ -25,22 +25,38 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-### 3. 配置数据库连接和 OpenAI API
+### 3. 配置文件设置
 
-在 `vanna_mysql.py` 脚本中，您需要配置以下信息：
+项目使用 `config.ini` 文件来管理配置信息。为了安全起见，实际的配置文件不会被提交到 Git 仓库。您需要：
 
-*   **MySQL 数据库连接信息**:
-    *   `host`
-    *   `dbname`
-    *   `user`
-    *   `password`
-    *   `port`
-*   **OpenAI API**:
-    *   `api_key`
-    *   `base_url` (如果使用代理或特定端点)
-    *   `model` (例如 'gpt-4o-mini')
+1. 复制配置文件模板：
+```bash
+cp config.template.ini config.ini
+```
 
-请根据您的实际情况修改脚本中的相应值。
+2. 编辑 `config.ini` 文件，填入您的配置信息：
+
+```ini
+[mysql]
+host = your_host          # MySQL 服务器地址
+database = your_database  # 数据库名称
+user = your_user         # 数据库用户名
+password = your_password # 数据库密码
+port = 3306             # 数据库端口
+
+[openai]
+api_key = your_api_key   # OpenAI API 密钥
+base_url = your_base_url # OpenAI API 基础URL
+model = your_model      # 使用的模型名称
+
+[vanna]
+data_path = ./data      # Vanna 数据存储路径
+```
+
+注意：
+- 请确保 `config.ini` 文件不会被提交到 Git 仓库（已在 `.gitignore` 中配置）
+- 配置文件中的敏感信息（如密码、API密钥等）请妥善保管
+- 建议将 `config.ini` 文件放在项目根目录下
 
 ## 运行项目
 
@@ -60,4 +76,6 @@ python vanna_mysql.py
 ## 注意
 
 *   请确保您的 MySQL 服务正在运行，并且网络可以访问 OpenAI API 端点。
-*   脚本中的 API 密钥和数据库凭证是敏感信息，请妥善保管，不要直接提交到版本控制系统。考虑使用环境变量或配置文件管理这些凭证。 
+*   脚本中的 API 密钥和数据库凭证是敏感信息，请妥善保管，不要直接提交到版本控制系统。
+*   配置文件 `config.ini` 包含了敏感信息，请确保它不会被提交到版本控制系统。
+

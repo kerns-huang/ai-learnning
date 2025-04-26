@@ -6,7 +6,12 @@ __pycache__/
 chroma.sqlite3
 
 # Temporary generated folders
-data/*
+5b*/
+5e*/
+
+# Configuration files
+config.ini
+*.env
 
 # C extensions
 *.so
